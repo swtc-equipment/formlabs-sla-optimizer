@@ -1,0 +1,6 @@
+{
+  "name": "SLA 3D 列印優化系統-t1",
+  "description": "專業級 SLA 3D 列印建構方向優化 MVP。提供 STL 列印風險分析、互動式表面標記以及基於幾何運算的自動化擺放優化，專為 Formlabs PreForm 工作流設計。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

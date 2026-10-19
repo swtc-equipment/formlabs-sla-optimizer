@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user authentication profile, permission roles, and account status.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "description": "Unique identifier matching Firebase Auth UID." },
+        "email": { "type": "string", "description": "User email address." },
+        "displayName": { "type": "string", "description": "User display name." },
+        "role": { "type": "string", "enum": ["admin", "user"], "description": "User authorization role." },
+        "status": { "type": "string", "enum": ["active", "pending", "disabled"], "description": "Account status." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": "string", "description": "Account validity expiration timestamp (ISO 8601)." },
+        "activeSession": {
+          "type": "object",
+          "properties": {
+            "sessionId": { "type": "string" },
+            "loggedInAt": { "type": "string", "format": "date-time" },
+            "lastActiveAt": { "type": "string", "format": "date-time" },
+            "deviceLabel": { "type": "string" }
+          },
+          "description": "Currently active single-computer session locking record."
+        }
+      },
+      "required": ["uid", "email", "role", "status", "createdAt"]
+    },
+    "OptimizationProject": {
+      "title": "Optimization Project",
+      "description": "User saved 3D print optimization projects and results.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "fileName": { "type": "string" },
+        "fileSize": { "type": "number" },
+        "stats": { "type": "object" },
+        "weights": { "type": "object" },
+        "resultAngle": { "type": "object" },
+        "score": { "type": "number" },
+        "resinType": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "fileName", "createdAt"]
+    },
+    "InviteCode": {
+      "title": "Registration Invite Code",
+      "description": "One-time authorization codes for engineer registration control.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "code": { "type": "string" },
+        "status": { "type": "string", "enum": ["active", "used", "revoked"] },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "usedByEmail": { "type": "string" },
+        "usedAt": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      },
+      "required": ["code", "status", "createdAt", "createdBy"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "entity": "UserProfile",
+      "description": "User profile document indexed by Firebase Auth UID."
+    },
+    "/projects/{projectId}": {
+      "entity": "OptimizationProject",
+      "description": "Optimization history and saved records."
+    },
+    "/accounts/{emailKey}": {
+      "entity": "UserProfile",
+      "description": "Custom email accounts and credentials."
+    },
+    "/inviteCodes/{codeId}": {
+      "entity": "InviteCode",
+      "description": "One-time registration codes managed by admins."
+    }
+  }
+}
